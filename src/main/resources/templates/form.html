@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>New Application</title></head>
+<body>
+<h1>New Job Application</h1>
+<form th:action="@{/save}" th:object="${jobApplication}" method="post">
+    <input th:field="*{companyName}" placeholder="Company Name"/>
+    <input th:field="*{position}" placeholder="Position"/>
+    <input th:field="*{status}" placeholder="Status"/>
+    <input th:field="*{appliedDate}" type="date"/>
+    <textarea th:field="*{notes}" placeholder="Notes"></textarea>
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
