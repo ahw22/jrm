@@ -17,7 +17,19 @@ public class JobApplicationService {
         return repository.findAll();
     }
 
+    public JobApplication findById(Long id) throws RuntimeException {
+        try {
+            return repository.findById(id).get();
+        } catch (Exception e) {
+            throw new RuntimeException("No application with given ID found.");
+        }
+    }
+
     public void save(JobApplication jobApplication) {
         repository.save(jobApplication);
+    }
+
+    public void deleteById(Long id) {
+        repository.deleteById(id);
     }
 }
