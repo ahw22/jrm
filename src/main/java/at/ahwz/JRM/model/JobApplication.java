@@ -1,9 +1,6 @@
 package at.ahwz.JRM.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -21,6 +18,7 @@ public class JobApplication {
     private String companyName;
     private String position;
     private LocalDate appliedDate;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ApplicationStatus status;
     private String notes;
 }
