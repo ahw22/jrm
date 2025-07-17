@@ -25,6 +25,7 @@ public class JobApplicationController {
     @GetMapping("/new")
     public String showForm(Model model) {
         model.addAttribute("jobApplication", new JobApplication());
+        model.addAttribute("statuses", ApplicationStatus.values());
         return "form";
     }
 
