@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Controller
 public class JobApplicationController {
 
@@ -48,4 +52,16 @@ public class JobApplicationController {
         service.deleteById(id);
         return "redirect:/";
     }
+
+    @GetMapping("/stats")
+    public String showStats(Model model) {
+        List<JobApplication> applications = service.findAll();
+
+        Map<ApplicationStatus, Long> statusCounts = applications.stream()
+                .collect(Collectors.groupingBy(JobApplication::getStatus, Collectors.counting()));
+
+        model.addAttribute("statusCounts", statusCounts);
+        return "stats";
+    }
+
 }
