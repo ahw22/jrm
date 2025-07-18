@@ -32,6 +32,9 @@
     <div class="form-floating mb-3">
         <input class="form-control" id="floatingDate" th:field="*{appliedDate}" type="date" required/>
         <label for="floatingDate">Date</label>
+        <script>
+            document.getElementById('floatingDate').valueAsDate = new Date();
+        </script>
     </div>
     <div class="form-floating mb-3">
         <textarea class="form-control" id="floatingNotes" th:field="*{notes}" placeholder="Notes"></textarea>
