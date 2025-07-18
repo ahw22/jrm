@@ -30,10 +30,10 @@ public class SecurityConfig {
 
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**") // allow H2 console
+                        .ignoringRequestMatchers("/h2-console/**")
                 )
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable()) // ✅ allows H2 frames
+                        .frameOptions(frame -> frame.disable())
                 )
         ;
 
