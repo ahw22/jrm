@@ -51,7 +51,8 @@
             <td th:text="${app.notes}"></td>
             <td th:text="${app.appliedDate}"></td>
             <td><a th:href="@{/edit/{id}(id=${app.id})}" class="btn btn-primary btn-sm">Edit</a>
-                <a th:href="@{/delete/{id}(id=${app.id})}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this entry?')">Delete</a>
+                <a th:href="@{/delete/{id}(id=${app.id})}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Are you sure you want to delete this entry?')">Delete</a>
             </td>
         </tr>
     </table>
