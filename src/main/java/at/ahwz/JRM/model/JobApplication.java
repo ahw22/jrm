@@ -21,4 +21,5 @@ public class JobApplication {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
     private String notes;
+
 }
