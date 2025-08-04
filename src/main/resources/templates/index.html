@@ -6,9 +6,30 @@
     <title>Job Applications</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body style="background-color: slate-gray">
 <h1>Applications</h1>
+<br>
+<div class="container-fluid row">
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Special title treatment</h5>
+                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <canvas id="statusChart" style="max-width:400px;max-height:200px"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
 <div class="container-fluid">
     <a th:href="@{/new}">
         <button type="button" class="btn btn-primary">Add New</button>
@@ -39,4 +60,39 @@
         integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
         crossorigin="anonymous"></script>
 </body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const statusData = [[${statusCounts}]];
+    const colorMap = [[${statusColors}]];
+    const labels = Object.keys(statusData);
+    const data = Object.values(statusData);
+    const backgroundColors = labels.map(label => colorMap[label]);
+
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Applications by Status',
+                data: data,
+                backgroundColor: backgroundColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                },
+                title: {
+                    display: true,
+                    text: 'Job Applications by Status'
+                }
+            }
+        }
+    });
+    /*]]>*/
+</script>
 </html>
