@@ -66,15 +66,4 @@ public class JobApplicationController {
         return "redirect:/";
     }
 
-    @GetMapping("/stats")
-    public String showStats(Model model) {
-        List<JobApplication> applications = service.findAll();
-
-        Map<ApplicationStatus, Long> statusCounts = applications.stream()
-                .collect(Collectors.groupingBy(JobApplication::getStatus, Collectors.counting()));
-
-        model.addAttribute("statusCounts", statusCounts);
-        return "stats";
-    }
-
 }
