@@ -24,6 +24,7 @@ public class JobApplicationController {
     @GetMapping("/")
     public String listApplications(Model model) {
         List<JobApplication> applications = service.findAll();
+        List<JobApplication> activeApplications = service.findAllActive();
 
         Map<ApplicationStatus, Long> statusCounts = applications.stream()
                 .collect(Collectors.groupingBy(JobApplication::getStatus, Collectors.counting()));
@@ -33,6 +34,8 @@ public class JobApplicationController {
         model.addAttribute("statusColors", statusColors);
         model.addAttribute("statusCounts", statusCounts);
         model.addAttribute("applications", applications);
+        model.addAttribute("activeApplications", activeApplications);
+        model.addAttribute("staleCount", activeApplications.stream().filter(JobApplication::isStale).toList().size());
         return "index";
     }
 

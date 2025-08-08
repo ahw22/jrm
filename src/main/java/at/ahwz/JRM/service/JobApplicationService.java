@@ -25,6 +25,11 @@ public class JobApplicationService {
         }
     }
 
+    public List<JobApplication> findAllActive() {
+        List<JobApplication> applications = repository.findAll();
+        return applications.stream().filter(JobApplication::isActive).toList();
+    }
+
     public void save(JobApplication jobApplication) {
         repository.save(jobApplication);
     }
