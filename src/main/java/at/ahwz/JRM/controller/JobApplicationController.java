@@ -6,9 +6,15 @@ import at.ahwz.JRM.service.JobApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
 
 @Controller
 public class JobApplicationController {
@@ -30,7 +36,22 @@ public class JobApplicationController {
     }
 
     @PostMapping("/save")
-    public String save(JobApplication jobApplication) {
+    public String saveApplication(@ModelAttribute JobApplication jobApplication,
+                                  @RequestParam("advertImage") MultipartFile imageFile) throws IOException {
+        if (!imageFile.isEmpty()) {
+            String uploadDir = "uploads/";
+
+            String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            Files.copy(imageFile.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+
+            jobApplication.setAdvertImageFilename(fileName);
+        }
         JobApplication savedApplication = service.save(jobApplication);
         return "redirect:/application/" + savedApplication.getId();
     }

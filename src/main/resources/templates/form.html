@@ -9,7 +9,7 @@
 <body style="background-color: slate-gray">
 <h1>New Job Application</h1>
 <div class="container-sm">
-<form th:action="@{/save}" th:object="${jobApplication}" method="post">
+<form th:action="@{/save}" th:object="${jobApplication}" method="post" enctype="multipart/form-data">
     <input type="hidden" th:field="*{id}"/>
     <div class="form-floating mb-3">
         <input class="form-control" id="floatingCompany" th:field="*{companyName}" placeholder="Company Name" required/>
@@ -39,6 +39,10 @@
     <div class="form-floating mb-3">
         <textarea class="form-control" id="floatingNotes" th:field="*{notes}" placeholder="Notes"></textarea>
         <label for="floatingNotes">Notes</label>
+    </div>
+    <div class="mb-3">
+        <label for="advertImage" class="form-label">Advert Screenshot</label>
+        <input class="form-control" type="file" id="advertImage" name="advertImage" accept="image/*">
     </div>
     <div class="form-floating mb-3 d-grid gap-2">
         <button class="btn btn-success" type="submit">Save</button>
