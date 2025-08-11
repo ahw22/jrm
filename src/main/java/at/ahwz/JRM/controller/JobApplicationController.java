@@ -49,4 +49,10 @@ public class JobApplicationController {
         return "redirect:/";
     }
 
+    @GetMapping("/application/{id}")
+    public String getApplication(@PathVariable Long id, Model model) {
+        JobApplication application = service.findById(id);
+        model.addAttribute("jobApplication", application);
+        return "application";
+    }
 }
