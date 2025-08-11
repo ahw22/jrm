@@ -21,6 +21,7 @@ public class JobApplication {
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
     private String notes;
+    private String advertImageFilename;
 
     public boolean isActive() {
         return status.equals(ApplicationStatus.APPLIED) || status.equals(ApplicationStatus.INTERVIEWING) || status.equals(ApplicationStatus.OFFER);
