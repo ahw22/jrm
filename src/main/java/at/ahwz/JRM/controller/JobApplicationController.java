@@ -31,8 +31,8 @@ public class JobApplicationController {
 
     @PostMapping("/save")
     public String save(JobApplication jobApplication) {
-        JobApplication savedApplication = service.save(jobApplication);
-        return "redirect:/application/" + savedApplication.getId();
+        service.save(jobApplication);
+        return "redirect:/application/" + jobApplication.getId();
     }
 
     @GetMapping("/edit/{id}")
