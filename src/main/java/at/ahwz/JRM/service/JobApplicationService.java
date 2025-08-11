@@ -51,8 +51,8 @@ public class JobApplicationService {
         model.addAttribute("staleCount", activeApplications.stream().filter(JobApplication::isStale).toList().size());
     }
 
-    public void save(JobApplication jobApplication) {
-        repository.save(jobApplication);
+    public JobApplication save(JobApplication jobApplication) {
+        return repository.save(jobApplication);
     }
 
     public void deleteById(Long id) {

@@ -31,8 +31,8 @@ public class JobApplicationController {
 
     @PostMapping("/save")
     public String save(JobApplication jobApplication) {
-        service.save(jobApplication);
-        return "redirect:/application/" + jobApplication.getId();
+        JobApplication savedApplication = service.save(jobApplication);
+        return "redirect:/application/" + savedApplication.getId();
     }
 
     @GetMapping("/edit/{id}")
@@ -45,7 +45,7 @@ public class JobApplicationController {
 
     @GetMapping("/delete/{id}")
     public String deleteApplication(@PathVariable Long id) {
-        service.deleteById(id);
+         service.deleteById(id);
         return "redirect:/";
     }
 
