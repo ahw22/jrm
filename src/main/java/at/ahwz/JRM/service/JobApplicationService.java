@@ -49,7 +49,6 @@ public class JobApplicationService {
         model.addAttribute("applications", applications);
         model.addAttribute("activeApplications", activeApplications);
         model.addAttribute("staleCount", activeApplications.stream().filter(JobApplication::isStale).toList().size());
-
     }
 
     public void save(JobApplication jobApplication) {
