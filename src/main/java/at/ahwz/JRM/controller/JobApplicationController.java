@@ -10,11 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 @Controller
 public class JobApplicationController {
 
@@ -23,19 +18,7 @@ public class JobApplicationController {
 
     @GetMapping("/")
     public String listApplications(Model model) {
-        List<JobApplication> applications = service.findAll();
-        List<JobApplication> activeApplications = service.findAllActive();
-
-        Map<ApplicationStatus, Long> statusCounts = applications.stream()
-                .collect(Collectors.groupingBy(JobApplication::getStatus, Collectors.counting()));
-        Map<String, String> statusColors = Arrays.stream(ApplicationStatus.values())
-                .collect(Collectors.toMap(Enum::name, ApplicationStatus::getColor));
-
-        model.addAttribute("statusColors", statusColors);
-        model.addAttribute("statusCounts", statusCounts);
-        model.addAttribute("applications", applications);
-        model.addAttribute("activeApplications", activeApplications);
-        model.addAttribute("staleCount", activeApplications.stream().filter(JobApplication::isStale).toList().size());
+        service.getDashboardData(model);
         return "index";
     }
 
