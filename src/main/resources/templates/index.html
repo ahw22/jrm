@@ -19,7 +19,7 @@
                 th:text="${staleCount > 0}
                 ? (staleCount == 1
                     ? 'There is 1 application that needs your attention.'
-                    : 'There are ' + staleCount + ' applications that need your attention!')
+                    : 'There are ' + ${staleCount} + ' applications that need your attention!')
                 : 'All applications are up to date.'">
             </h5>
         </div>
