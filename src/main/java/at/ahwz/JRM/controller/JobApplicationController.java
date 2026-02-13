@@ -36,23 +36,13 @@ public class JobApplicationController {
     }
 
     @PostMapping("/save")
-    public String saveApplication(@ModelAttribute JobApplication jobApplication,
-                                  @RequestParam("advertImage") MultipartFile imageFile) throws IOException {
-        if (!imageFile.isEmpty()) {
-            String uploadDir = "uploads/";
+    public String saveApplication(
+            @ModelAttribute JobApplication jobApplication,
+            @RequestParam(value = "advertImages", required = false) MultipartFile[] imageFiles,
+            @RequestParam(value = "removeImages", required = false) String[] removeImages) throws IOException {
 
-            String fileName = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
+        JobApplication savedApplication = service.saveApplication(jobApplication, imageFiles, removeImages);
 
-            Path uploadPath = Paths.get(uploadDir);
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
-
-            Files.copy(imageFile.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-
-            jobApplication.addAdvertImageFilename(fileName);
-        }
-        JobApplication savedApplication = service.save(jobApplication);
         return "redirect:/application/" + savedApplication.getId();
     }
 

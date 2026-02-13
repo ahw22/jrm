@@ -6,10 +6,17 @@ import at.ahwz.JRM.repository.JobApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +24,8 @@ public class JobApplicationService {
 
     @Autowired
     private JobApplicationRepository repository;
+
+    private final String uploadDir = "uploads";
 
     public List<JobApplication> findAll() {
         return repository.findAll();
@@ -51,10 +60,40 @@ public class JobApplicationService {
         model.addAttribute("staleCount", activeApplications.stream().filter(JobApplication::isStale).toList().size());
     }
 
-    public JobApplication save(JobApplication jobApplication) {
-        if (jobApplication.getId().isBlank()) {
+    public JobApplication saveApplication(JobApplication jobApplication,
+                                          MultipartFile[] imageFiles,
+                                          String[] removeImages) throws IOException {
+
+        // 1. Ensure MongoDB generates an _id if necessary
+        if (jobApplication.getId() == null || jobApplication.getId().isBlank()) {
             jobApplication.setId(null);
         }
+
+        // 2. Remove images marked for deletion
+        if (removeImages != null) {
+            for (String filename : removeImages) {
+                jobApplication.removeAdvertImageFilename(filename);
+                Path filePath = Paths.get(uploadDir).resolve(filename);
+                Files.deleteIfExists(filePath);
+            }
+        }
+
+        // 3. Save new uploaded images
+        if (imageFiles != null) {
+            for (MultipartFile file : imageFiles) {
+                if (!file.isEmpty()) {
+                    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+                    Path uploadPath = Paths.get(uploadDir);
+                    if (!Files.exists(uploadPath)) {
+                        Files.createDirectories(uploadPath);
+                    }
+                    Files.copy(file.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+                    jobApplication.addAdvertImageFilename(fileName);
+                }
+            }
+        }
+
+        // 4. Save the entity
         return repository.save(jobApplication);
     }
 
