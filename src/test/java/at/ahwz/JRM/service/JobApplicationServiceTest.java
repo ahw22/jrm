@@ -44,25 +44,25 @@ class JobApplicationServiceTest {
     @Test
     void testFindById_Found() {
         JobApplication app = new JobApplication();
-        app.setId(1L);
+        app.setId("1");
 
-        when(repository.findById(1L)).thenReturn(Optional.of(app));
+        when(repository.findById("1")).thenReturn(Optional.of(app));
 
-        JobApplication result = service.findById(1L);
-        assertEquals(1L, result.getId());
-        verify(repository).findById(1L);
+        JobApplication result = service.findById("1");
+        assertEquals("1", result.getId());
+        verify(repository).findById("1");
     }
 
     @Test
     void testFindById_NotFound() {
-        when(repository.findById(99L)).thenReturn(Optional.empty());
+        when(repository.findById("99")).thenReturn(Optional.empty());
 
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> {
-            service.findById(99L);
+            service.findById("99");
         });
 
         assertEquals("No application with given ID found.", thrown.getMessage());
-        verify(repository).findById(99L);
+        verify(repository).findById("99");
     }
 
     @Test
@@ -78,7 +78,7 @@ class JobApplicationServiceTest {
         List<JobApplication> result = service.findAllActive();
 
         assertEquals(1, result.size());
-        assertTrue(result.get(0).isActive());
+        assertTrue(result.getFirst().isActive());
     }
 
     @Test
@@ -146,7 +146,7 @@ class JobApplicationServiceTest {
 
     @Test
     void testDeleteById() {
-        service.deleteById(1L);
-        verify(repository).deleteById(1L);
+        service.deleteById("1");
+        verify(repository).deleteById("1");
     }
 }

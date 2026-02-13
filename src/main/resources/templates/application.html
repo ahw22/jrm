@@ -66,26 +66,29 @@
                 <div class="card-body">
                     <h5 class="card-title">Advert Screenshot</h5>
 
-                    <div th:if="${jobApplication.advertImageFilename != null}">
-                        <a th:href="@{'/uploads/' + ${jobApplication.advertImageFilename}}" target="_blank">
-                            <img th:src="@{'/uploads/' + ${jobApplication.advertImageFilename}}"
-                                 alt="Advert screenshot"
-                                 class="img-fluid img-thumbnail mb-2"
-                                 style="max-height: 400px; width: auto; display:block; margin:auto;"/>
-                        </a>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted" th:text="${jobApplication.advertImageFilename}">filename.png</small>
-                            <a th:href="@{'/uploads/' + ${jobApplication.advertImageFilename}}" download
-                               class="btn btn-sm btn-outline-light">Download</a>
+                    <div th:if="${jobApplication.advertImageFilenames != null and !#lists.isEmpty(jobApplication.advertImageFilenames)}">
+                        <div th:each="filename : ${jobApplication.advertImageFilenames}" class="mb-3">
+                            <a th:href="@{'/uploads/' + ${filename}}" target="_blank">
+                                <img th:src="@{'/uploads/' + ${filename}}"
+                                     alt="Advert screenshot"
+                                     class="img-fluid img-thumbnail mb-2"
+                                     style="max-height: 400px; width: auto; display:block; margin:auto;"/>
+                            </a>
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted" th:text="${filename}">filename.png</small>
+                                <a th:href="@{'/uploads/' + ${filename}}" download
+                                   class="btn btn-sm btn-outline-light">Download</a>
+                            </div>
                         </div>
                     </div>
 
-                    <div th:if="${jobApplication.advertImageFilename == null}">
+                    <div th:if="${jobApplication.advertImageFilenames == null or #lists.isEmpty(jobApplication.advertImageFilenames)}">
                         <div class="border rounded p-4 text-center text-muted" style="min-height:200px">
                             <p class="mb-2">No screenshot uploaded</p>
                             <small class="d-block">You can add a screenshot when editing this application.</small>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

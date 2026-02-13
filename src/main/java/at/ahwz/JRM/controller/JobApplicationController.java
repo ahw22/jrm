@@ -50,14 +50,14 @@ public class JobApplicationController {
 
             Files.copy(imageFile.getInputStream(), uploadPath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
 
-            jobApplication.setAdvertImageFilename(fileName);
+            jobApplication.addAdvertImageFilename(fileName);
         }
         JobApplication savedApplication = service.save(jobApplication);
         return "redirect:/application/" + savedApplication.getId();
     }
 
     @GetMapping("/edit/{id}")
-    public String editForm(@PathVariable Long id, Model model) {
+    public String editForm(@PathVariable String id, Model model) {
         JobApplication jobApplication = service.findById(id);
         model.addAttribute("jobApplication", jobApplication);
         model.addAttribute("statuses", ApplicationStatus.values());
@@ -65,13 +65,13 @@ public class JobApplicationController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteApplication(@PathVariable Long id) {
+    public String deleteApplication(@PathVariable String id) {
          service.deleteById(id);
         return "redirect:/";
     }
 
     @GetMapping("/application/{id}")
-    public String getApplication(@PathVariable Long id, Model model) {
+    public String getApplication(@PathVariable String id, Model model) {
         JobApplication application = service.findById(id);
         model.addAttribute("jobApplication", application);
         return "application";

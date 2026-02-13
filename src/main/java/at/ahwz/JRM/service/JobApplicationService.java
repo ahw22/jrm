@@ -22,7 +22,7 @@ public class JobApplicationService {
         return repository.findAll();
     }
 
-    public JobApplication findById(Long id) throws RuntimeException {
+    public JobApplication findById(String id) throws RuntimeException {
         try {
             return repository.findById(id).get();
         } catch (Exception e) {
@@ -52,10 +52,13 @@ public class JobApplicationService {
     }
 
     public JobApplication save(JobApplication jobApplication) {
+        if (jobApplication.getId().isBlank()) {
+            jobApplication.setId(null);
+        }
         return repository.save(jobApplication);
     }
 
-    public void deleteById(Long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 }

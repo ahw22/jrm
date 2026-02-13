@@ -1,11 +1,14 @@
 package at.ahwz.JRM.model;
 
-import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-@Entity
+@Document
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,15 +16,13 @@ import java.time.LocalDate;
 public class JobApplication {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String companyName;
     private String position;
     private LocalDate appliedDate;
-    @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
     private String notes;
-    private String advertImageFilename;
+    private List<String> advertImageFilenames = new ArrayList<>();
 
     public boolean isActive() {
         return status.equals(ApplicationStatus.APPLIED) || status.equals(ApplicationStatus.INTERVIEWING) || status.equals(ApplicationStatus.OFFER);
@@ -29,5 +30,15 @@ public class JobApplication {
 
     public boolean isStale() {
         return appliedDate.isBefore(LocalDate.now().minusDays(30));
+    }
+
+    public void addAdvertImageFilename(String name) {
+        if (advertImageFilenames == null) advertImageFilenames = new ArrayList<>();
+        advertImageFilenames.add(name);
+    }
+
+    public void removeAdvertImageFilename(String name) {
+        if (advertImageFilenames == null) return;
+        advertImageFilenames.remove(name);
     }
 }
