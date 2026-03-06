@@ -13,10 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -64,8 +61,12 @@ public class JobApplicationService {
                                           MultipartFile[] imageFiles,
                                           String[] removeImages) throws IOException {
 
-        // 1. Ensure MongoDB generates an _id if necessary
-        if (jobApplication.getId() == null || jobApplication.getId().isBlank()) {
+        if (jobApplication.getId() != null && !jobApplication.getId().isBlank()) {
+            JobApplication existing = repository.findById(jobApplication.getId()).orElse(null);
+            if (existing != null && existing.getAdvertImageFilenames() != null) {
+                jobApplication.setAdvertImageFilenames(new ArrayList<>(existing.getAdvertImageFilenames()));
+            }
+        } else {
             jobApplication.setId(null);
         }
 

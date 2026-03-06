@@ -16,6 +16,7 @@ import java.util.List;
 public class JobApplication {
 
     @Id
+    @Getter
     private String id;
     private String companyName;
     private String position;
